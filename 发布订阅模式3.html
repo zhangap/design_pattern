@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>发布订阅模式3</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script src="js/Event.js"></script>
+<script>
+    Event.add("zap",function(){
+        console.log("我是张爱平，这是我订阅的事件");
+    });
+    Event.add("zap",function(){
+        console.log("我是zap,这是我订阅的第二个事件",arguments);
+    });
+    Event.add("zal",function(){
+        console.log("我是zal，这是我订阅的事件");
+    });
+    var testFn = function(){
+        console.log("我是tengri，这是我订阅的第三个事件");
+    };
+    Event.add("zap",testFn);
+
+   
+
+    Event.remove("zap",testFn);
+
+    Event.trigger("zap","张爱平");
+    Event.trigger("zal");
+</script>

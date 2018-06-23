@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>发布订阅模式2</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+   var event = {
+       clientList:[],
+       listen:function(key,fn){
+           this.clientList[key] = this.clientList[key] || [];
+           this.clientList[key].push(fn);
+       },
+       trigger:function(){
+           var key = Array.prototype.shift.call(arguments),
+           fns = this.clientList[key];
+
+           if(fns && fns.length){
+               for(var i =0,len = fns.length;i<len;i++){
+                   fns[i].apply(this,arguments);
+               }
+           }else{
+               return false;
+           }
+       },
+       remove:function(key,fn){
+           var fns = this.clientList[key];
+           if(!fns) return false;
+
+            //如果没有fn，表示取消key下的所有事件
+           if(!fn){
+               delete this.clientList[key];
+           }else{
+               for(var i =0,len = fns.length;i<len;i++){
+                   if(fns[i] === fn){
+                       fns.splice(i,1);
+                       break;
+                   }
+               }
+           }
+       }
+   };
+
+   var installEvent = function(obj){
+       for(var key in event){
+           obj[key] = event[key];
+       }
+   }
+
+   var salesOffices = {};
+   installEvent(salesOffices);
+
+   var fn1 = function(price){
+       console.log("第一个事件",price);
+   };
+   var fn2 = function(price){
+       console.log("第二个事件",price);
+   };
+
+   var fn3 = function(price){
+       console.log("第三个事件",price);
+   }
+
+   salesOffices.listen("zap",fn1);
+   salesOffices.listen("zap",fn2);
+   salesOffices.listen("zap",fn3);
+
+   salesOffices.listen("zal",fn3);
+
+    salesOffices.remove("zap",fn2);
+
+   salesOffices.trigger("zap","100W");
+   salesOffices.trigger("zal","200W");
+   
+
+</script>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    var currying = function(fn){
+        var args =[];
+        return function(){
+            if(arguments.length){
+                [].push.apply(args,arguments);
+                return arguments.callee;
+            }else{
+                return fn.apply(this,args);
+            }
+        }
+    }
+
+    var cost = (function(){
+        var money = 0;
+        return function(){
+            for(var i =0;i<arguments.length;i++){
+                money += arguments[i];
+            }
+            return money;
+        }
+    })();
+
+    debugger;
+    var cost = currying(cost);
+    cost(100);
+    cost(200);
+    cost(300);
+    alert(cost());
+</script>

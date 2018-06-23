@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>动画类</title>
+    <style>
+        #div1{
+            width:100px;
+            height:100px;
+            position: absolute;
+            background:blue;
+            text-align: center;
+            line-height: 100px;
+            color:#fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="div1">我是div</div>
+</body>
+</html>
+<script>
+    var Animate = function( dom){
+        this.dom = dom;
+        this.startTime = 0;
+        this.startPos = 0;
+        this.endPos = 0;
+        this.propertyName = null;
+        this.easing = null; //缓动算法
+        this.duration = null;  //动画持续时间
+    }
+
+    Animate.prototype.start = function(propertyName,endPos,duration,easing){
+        this.startTime += new Date();
+        this.startPos = this.dom.getBoundingClientRect()[propertyName]; //dom节点的初始位置
+        this.propertyName = propertyName;
+        this.endPos = endPos;
+        this.duration = duration;
+        this.easing = tween[duration];
+
+        var self = this;
+        var timeId = setInterval(function(){
+            if(self.step() === false){
+                clearInterval(timeId);
+            }
+        },19);
+    };
+
+    Animate.prototype.step = function(){
+        var t = +new Date();
+
+        if( t>= this.startTime + this.duration){
+            this.update(this.endPos);
+            return false;
+        }
+
+        var pos = this.easing(t-this.startTime, this.startPos, this.endPos - this.startPos,this.duration);
+        //pos为小球当前位置
+        this.update(pos); //更新小球的css属性值
+    }
+
+    Animate.prototype.update = function(pos){
+        this.dom.style[this.propertyName] = pos + "px";
+    }
+
+    var div = document.getElementById("div1");
+    var animate = new Animate(div);
+
+    animate.start("left",500,1000,"strongEaseOut");
+    
+
+</script>

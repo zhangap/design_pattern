@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+     var cost = (function(){
+         var args = [];
+         return function(){
+             if(arguments.length === 0){
+                 console.log("参与计算....");
+                 var money  =0;
+                 for(var i =0;i<args.length;i++){
+                     money += args[i];
+                 }
+                 return money;
+             }else{
+                 args.push(arguments[0]);
+             }
+         }
+     })();
+     cost(100);
+     cost(200);
+     cost(300);
+     console.log(cost());
+</script>

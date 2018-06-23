@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>代理</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    var myImage = (function(){
+        var imgNode = document.createElement("img");
+        document.body.appendChild(imgNode);
+        return {
+            setSrc:function(src,flag){
+                imgNode.src = src;
+                flag && (imgNode = null);
+            }
+        }
+    })();
+
+
+    var proxyImage = (function(){
+        var img = new Image();
+        img.onload = function(){
+            myImage.setSrc(this.src,true);
+        }
+
+        return {
+            setSrc:function(src){
+                myImage.setSrc("imgs/aa.jpg");
+                img.src = src;
+            }
+        }
+    })();
+
+    proxyImage.setSrc("http://img3.duitang.com/uploads/item/201605/27/20160527205144_8Kh3w.jpeg");
+    //proxyImage.setSrc("http://img3.duitang.com/uploads/item/201605/27/20160527205144_8Kh3w.jpeg");
+</script>

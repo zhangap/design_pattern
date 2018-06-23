@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    var arr = [1,4,2,3,5,6];
+    arr.sort(function(a,b){
+        // debugger;
+        return a-b;
+    })
+
+    var isType = function(type){
+        return function(obj){
+            return Object.prototype.toString.call(obj) === "[object "+type+"]";
+        }
+    };
+    var isArray = isType("Array");
+    console.log(isArray([]));
+
+
+    var Type = {},
+        arr  =["String","Array","Function","Object","Number"];
+    for(var i =0;i<arr.length;i++){
+        (function(type){
+            Type["is"+type] = function(obj){
+                return Object.prototype.toString.call(obj) === "[object "+type+"]";
+            }
+        })(arr[i]);
+    }
+
+    console.log(Type.isArray([1,2,3]));
+    console.log(Type.isString("str"));
+    console.log(Type.is);
+
+    var getSingle = function(fn){
+        var ret;
+        return function(){
+            return ret || (ret = fn.apply(this,arguments));
+        }
+    }
+    var fn = getSingle(function(){
+        console.log("this",this);
+        console.log(1);
+    });
+
+    var fn1 = fn();
+    var fn2 = fn();
+   console.log(fn1 === fn2);
+</script>

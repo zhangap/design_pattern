@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/jquery.mousewheel.min.js"> </script>
+    <style>
+        html,body{
+            width:100%;
+            height:100%;
+            overflow: hidden;
+        }
+        #div1{
+            width:395px;
+            height:165px;
+            position: absolute;
+            border: 1px solid #ccc;
+        }
+        #div1 img{
+            width:100%;
+            height:100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="div1">
+        <img src="imgs/aa.jpg">
+    </div>
+</body>
+</html>
+<script>
+   var  $div = $("#div1"),
+    bodyWidth = $(document.body).outerWidth(),
+    bodyHeight = $(document.body).outerHeight(),
+    maxWidth =bodyWidth * 0.8,
+    maxHeight = bodyHeight *0.8,
+    minWidth = 100,
+    minHeight = 100,
+    isMoving = false;
+    
+    setPos();
+
+    $div.on("mousewheel",function(event){
+        if(!isMoving){
+            isMoving = true;
+            var flag = event.deltaY;
+            console.log(flag);
+            zoomFn(flag);
+            isMoving = false;
+        }
+    });
+
+    //放大函数
+    function zoomFn(num){
+        var iWidth = $div.outerWidth(),
+            iHeight = $div.outerHeight();
+           
+        if(num === 1){
+            iWidth = parseInt(iWidth * 1.2,10) ;
+            iHeight = parseInt(iHeight *1.2,10) ;
+        } else{
+            iWidth = parseInt(iWidth / 1.2,10) ;
+            iHeight = parseInt(iHeight /1.2,10) ;
+        }
+    
+        if(validate(iWidth,iHeight)){
+            $div.css({
+                width:iWidth + "px",
+                height:iHeight + "px"
+            });
+            setPos();
+        }
+    }
+
+    //检测是否可以继续缩放
+    function validate(iWidth,iHeight){
+        if((iWidth >= maxWidth || iHeight >=maxHeight) || (iWidth <=minWidth || iHeight <=minHeight)){
+            return false;
+        }
+        return true;
+    }
+
+
+    //始终上div垂直水平居中
+    function setPos(){
+        var iWidth = $div.outerWidth(),
+            iHeight = $div.outerHeight(),
+            iLeft  = (bodyWidth  -iWidth)/2,
+            iTop = (bodyHeight -iHeight)/2;
+
+        $div.css({
+            left:iLeft + "px",
+            top:iTop +"px"
+        });  
+
+    }
+
+</script>

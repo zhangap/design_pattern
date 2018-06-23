@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>发布订阅模式终结版本</title>
+    <script src="js/Event2.js"></script>
+</head>
+<body>
+</body>
+</html>
+<script>
+
+    window.onload = function(){
+        debugger;
+        //先发布后订阅
+        
+       // Event.trigger("hello","helloword");
+
+        Event.listen("click",function(a){
+            console.log(a);
+        });
+        Event.trigger("click","发布的第1个事件");
+        Event.trigger("click","发布第2个事件");
+
+       Event.trigger("click","发布的第3个事件");
+
+
+        return;
+
+        //使用命名空间
+        Event.create("namespace1").listen("click",function(a){
+            console.log(a);
+        });
+
+        Event.create("namespace1").trigger("click","zap");
+
+        Event.create("namespace2").listen("click",function(a){
+            console.log(a);
+        });
+        Event.create("namespace2").listen("hello",function(a){
+            console.log(a);
+        });
+
+        Event.create("namespace2").trigger("click","zap2");
+        Event.create("namespace2").trigger("hello","hello world");
+
+
+    }
+
+    
+</script>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>外部迭代器</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    //内部迭代器
+    var each  = function(arr,callback){
+        for(var i =0,len = arr.length;i<len;i++){
+            callback.call(arr[i],i,arr[i]);
+        }
+    };
+   each([1,2,3],function(i,n){
+       console.log(i,n);
+   })
+
+   //外部迭代器
+   var Iterator = function(obj){
+       var current = 0;
+
+       var next = function(){
+           current +=1;
+       }
+
+       var isDone = function(){
+           return current >= obj.length;
+       }
+
+       var size = function(){
+           return obj.length;
+       }
+
+       var getCurrItem = function(){
+           return obj[current];
+       }
+
+       return {
+           next:next,
+           isDone:isDone,
+           getCurrItem:getCurrItem,
+           size:size
+       };
+   }
+
+   var compare = function(iterator1,iterator2){
+       if(iterator1.size() !== iterator2.size()){
+           throw new Error("两者不相等");
+       }
+       while(!iterator1.isDone() && !iterator2.isDone()){
+           if(iterator1.getCurrItem() !== iterator2.getCurrItem()){
+               throw new Error("两者不相等");
+           }
+           iterator1.next();
+           iterator2.next();
+       }
+       alert("iterator1和iterator2相等");
+   }
+
+//    debugger;
+   compare(Iterator([1,2,3]),Iterator([1,2,3,4]));
+</script>
